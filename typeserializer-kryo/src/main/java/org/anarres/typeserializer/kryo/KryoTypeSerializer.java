@@ -8,6 +8,12 @@ import java.lang.reflect.Type;
 import org.anarres.typeserializer.core.TypeSerializer;
 
 /**
+ * A serializer for {@link Kryo}.
+ *
+ * <code>
+ * Kryo kryo = new Kryo();
+ * kryo.addDefaultSerializer(Type.class, new KryoTypeSerializer());
+ * </code>
  *
  * @author shevek
  */
