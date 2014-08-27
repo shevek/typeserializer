@@ -1,0 +1,123 @@
+Package org.anarres.typeserializer.core ;
+
+Helpers
+
+	all = [0 .. 0xFFFF];
+
+	tab = 0x0009;
+	lf  = 0x000a;
+	cr  = 0x000d;
+	eol = lf | cr | cr lf; 
+	not_eol = [all - [cr + lf]];
+
+	not_star = [all - '*'];
+	not_star_slash = [not_star - '/'];
+
+	digit = ['0' .. '9'];
+	nondigit = ['_' + [['a' .. 'z'] + ['A' ..  'Z']]];
+	hex_digit = [digit + [['a' .. 'f'] + ['A' .. 'F']]];
+	hex_quad = hex_digit hex_digit hex_digit hex_digit;
+	universal_char_name = '\u' hex_quad;
+	identifier_nondigit = nondigit | universal_char_name;
+
+// include("helpers.sh")
+
+Tokens
+
+	kw_boolean = 'boolean' ;
+	kw_byte = 'byte' ;
+	kw_char = 'char' ;
+	kw_double = 'double' ;
+	kw_float = 'float' ;
+	kw_int = 'int' ;
+	kw_long = 'long' ;
+	kw_short = 'short' ;
+
+	tok_comma   = ',';
+	tok_gt      = '>';  
+	tok_lt      = '<';  
+	tok_dot     = '.';
+	tok_lsquare = '[';
+	tok_rsquare = ']';
+
+	identifier = identifier_nondigit (digit | identifier_nondigit)*;
+
+	blank = (eol | tab | ' ')+;
+	comment = 
+		('//' not_eol* eol?) |
+		('/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/') ;
+
+Ignored Tokens
+	blank,
+	comment;
+
+Productions
+
+	java_type { -> type } = 
+		{class} java_class
+			{ -> java_class.type } |
+		{array} java_array
+			{ -> java_array.type } |
+		{parameterized} java_parameterized
+			{ -> java_parameterized.type } |
+		{primitive} java_primitive
+			{ -> java_primitive.type } ;
+
+	java_class { -> type } =
+		java_identifier_list
+			{ -> New type.class([java_identifier_list.identifier]) } ;
+
+	java_array { -> type } =
+		java_type tok_lsquare tok_rsquare
+			{ -> New type.array(java_type.type) } ;
+
+	java_parameterized { -> type } =
+		java_class tok_lt java_type_list tok_gt
+			{ -> New type.parameterized(
+				java_class.type,
+				[java_type_list.type]) } ;
+
+	java_type_list { -> type* } =
+		{single} java_type
+			{ -> [java_type.type] } |
+		{list} java_type_list tok_comma java_type
+			{ -> [java_type_list.type, java_type.type] } ;
+
+	java_primitive { -> type } = 
+		{boolean} kw_boolean
+			{ -> New type.boolean() } |
+		{byte} kw_byte
+			{ -> New type.byte() } |
+		{char} kw_char
+			{ -> New type.char() } |
+		{double} kw_double
+			{ -> New type.double() } |
+		{float} kw_float
+			{ -> New type.float() } |
+		{int} kw_int
+			{ -> New type.int() } |
+		{long} kw_long
+			{ -> New type.long() } |
+		{short} kw_short
+			{ -> New type.short() } ;
+
+	java_identifier_list { -> identifier* } =
+		{single} identifier
+			{ -> [identifier] } |
+		{list} java_identifier_list tok_dot identifier
+			{ -> [java_identifier_list.identifier, identifier] } ;
+
+Abstract Syntax Tree
+
+	type = 
+		{class} [identifiers]:identifier* |
+		{array} [element_type]:type |
+		{parameterized} [raw_type]:type [arguments]:type* |
+		{boolean} |
+		{byte} |
+		{char} |
+		{double} |
+		{float} |
+		{int} |
+		{long} |
+		{short} ;
