@@ -31,7 +31,10 @@ subprojects {
         compile 'com.google.code.findbugs:jsr305:2.0.2'
         compile 'org.slf4j:slf4j-api:1.7.7'
 
-        testCompile 'junit:junit:4.8.1'
+        testCompile 'junit:junit:4.11'
+		testCompile "com.google.guava:guava:17.0"
+
+		testRuntime "org.slf4j:slf4j-jcl:1.7.7"
     }
 }
 

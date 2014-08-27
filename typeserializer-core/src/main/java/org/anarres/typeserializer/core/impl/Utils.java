@@ -30,23 +30,6 @@ public class Utils {
         return o != null ? o.hashCode() : 0;
     }
 
-    private static String removeWhitespace(@Nonnull String in) {
-        CLEAN:
-        {
-            for (int i = 0; i < in.length(); i++)
-                if (Character.isWhitespace(in.charAt(i)))
-                    break CLEAN;
-            return in;
-        }
-        StringBuilder out = new StringBuilder();
-        for (int i = 0; i < in.length(); i++) {
-            char c = in.charAt(i);
-            if (!Character.isWhitespace(c))
-                out.append(c);
-        }
-        return out.toString();
-    }
-
     /**
      * Maps a primitive class name to its corresponding abbreviation used in array class names.
      */
@@ -77,7 +60,6 @@ public class Utils {
      * @return the converted name
      */
     private static String toCanonicalName(@Nonnull String className) {
-        className = removeWhitespace(className);
         if (className.endsWith("[]")) {
             final StringBuilder classNameBuffer = new StringBuilder();
             while (className.endsWith("[]")) {
