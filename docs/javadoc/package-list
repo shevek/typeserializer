@@ -1,0 +1,8 @@
+org.anarres.typeserializer.core
+org.anarres.typeserializer.core.analysis
+org.anarres.typeserializer.core.impl
+org.anarres.typeserializer.core.lexer
+org.anarres.typeserializer.core.node
+org.anarres.typeserializer.core.parser
+org.anarres.typeserializer.kryo
+org.anarres.typeserializer.simplexml
