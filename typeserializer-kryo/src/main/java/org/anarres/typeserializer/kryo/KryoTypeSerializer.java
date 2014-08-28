@@ -10,10 +10,10 @@ import org.anarres.typeserializer.core.TypeSerializer;
 /**
  * A serializer for {@link Kryo}.
  *
- * <code>
+ * <pre>
  * Kryo kryo = new Kryo();
  * kryo.addDefaultSerializer(Type.class, new KryoTypeSerializer());
- * </code>
+ * </pre>
  *
  * @author shevek
  */

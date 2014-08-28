@@ -15,10 +15,39 @@ If you want to contribute a plugin for another serialization engine,
 please do so. If you need one but are not sure how to write it,
 please ask.
 
-serializer-core
----------------
+API Documentation
+-----------------
+
+The [JavaDoc is available](http://shevek.github.io/typeserializer/docs/javadoc/).
+
+typeserializer-core
+-------------------
 
 This module contains the two main routines:
 * String TypeSerializer.serialize(Type)
 * Type TypeSerializer.deserialize(String)
+
+typeserializer-kryo
+-------------------
+
+This provides an additional registerable Serializer for Kryo:
+
+	Kryo kryo = new Kryo();	// As usual.
+	kryo.addDefaultSerializer(Type.class, new KryoTypeSerializer());
+
+typeserializer-simplexml
+------------------------
+
+This provides an additional registerable Serializer for SimpleXML:
+
+	(example using TypeConverter and TypeTransform while avoiding
+	using a custom RegistryMatcher... which is what I do...)
+
+Building
+--------
+
+This is a standard gradle build: Run
+
+    ./gradlew build
+
 
