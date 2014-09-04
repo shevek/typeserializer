@@ -37,10 +37,12 @@ Tokens
 	tok_gt      = '>';  
 	tok_lt      = '<';  
 	tok_dot     = '.';
+	tok_dollar  = '$';
 	tok_lsquare = '[';
 	tok_rsquare = ']';
 
-	identifier = identifier_nondigit (digit | identifier_nondigit)*;
+	// Handle com.foo.Bar and Foo$1 -- no identifier_nondigit prefix
+	identifier = /*identifier_nondigit*/ (digit | identifier_nondigit)*;
 
 	blank = (eol | tab | ' ')+;
 	comment = 
@@ -64,8 +66,10 @@ Productions
 			{ -> java_primitive.type } ;
 
 	java_class { -> type } =
-		java_identifier_list
-			{ -> New type.class([java_identifier_list.identifier]) } ;
+		java_class_outer java_class_inner*
+			{ -> New type.class(
+				[java_class_outer.identifier],
+				[java_class_inner.identifier]) } ;
 
 	java_array { -> type } =
 		java_type tok_lsquare tok_rsquare
@@ -101,16 +105,20 @@ Productions
 		{short} kw_short
 			{ -> New type.short() } ;
 
-	java_identifier_list { -> identifier* } =
+	java_class_outer { -> identifier* } =
 		{single} identifier
 			{ -> [identifier] } |
-		{list} java_identifier_list tok_dot identifier
-			{ -> [java_identifier_list.identifier, identifier] } ;
+		{list} java_class_outer tok_dot identifier
+			{ -> [java_class_outer.identifier, identifier] } ;
+
+	java_class_inner { -> identifier } =
+		{single} tok_dollar identifier
+			{ -> identifier } ;
 
 Abstract Syntax Tree
 
 	type = 
-		{class} [identifiers]:identifier* |
+		{class} [name]:identifier* [inner_name]:identifier* |
 		{array} [element_type]:type |
 		{parameterized} [raw_type]:type [arguments]:type* |
 		{boolean} |

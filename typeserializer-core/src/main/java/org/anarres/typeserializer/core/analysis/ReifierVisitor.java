@@ -49,11 +49,15 @@ public class ReifierVisitor extends DepthFirstAdapter {
     public void caseAClassType(AClassType node) {
         buffer.setLength(0);
         boolean b = false;
-        for (TIdentifier identifier : node.getIdentifiers()) {
+        for (TIdentifier identifier : node.getName()) {
             if (b)
                 buffer.append('.');
             else
                 b = true;
+            identifier.apply(this);
+        }
+        for (TIdentifier identifier : node.getInnerName()) {
+            buffer.append('$');
             identifier.apply(this);
         }
         String name = buffer.toString();

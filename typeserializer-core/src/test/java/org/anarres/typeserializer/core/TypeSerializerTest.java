@@ -21,6 +21,12 @@ public class TypeSerializerTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(TypeSerializerTest.class);
 
+    public static class InnerStatic {
+    }
+
+    public class InnerInstance {
+    }
+
     public void testTransform(@Nonnull Type t) {
         LOG.info("Input is " + t + " of type " + t.getClass());
         String text = TypeSerializer.serialize(t);
@@ -44,6 +50,8 @@ public class TypeSerializerTest {
         testTransform(byte.class);
         testTransform(byte[].class);
         testTransform(Object.class);
+        testTransform(InnerStatic.class);
+        testTransform(InnerInstance.class);
 
         testTransform((new TypeToken<Map<String, String>>() {
         }).getType());
