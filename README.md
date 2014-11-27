@@ -24,8 +24,11 @@ typeserializer-core
 -------------------
 
 This module contains the two main routines:
-* String TypeSerializer.serialize(Type)
-* Type TypeSerializer.deserialize(String)
+* `String TypeSerializer.serialize(Type)`
+* `Type TypeSerializer.deserialize(String)`
+
+It also contains a generic `TypeVisitor` which may be used to walk a
+generic Type.
 
 typeserializer-kryo
 -------------------
