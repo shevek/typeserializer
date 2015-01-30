@@ -33,13 +33,18 @@ Tokens
 	kw_long = 'long' ;
 	kw_short = 'short' ;
 
+	kw_extends = 'extends' ;
+	kw_super = 'super' ;
+
 	tok_comma   = ',';
+	tok_and     = '&';
 	tok_gt      = '>';  
 	tok_lt      = '<';  
 	tok_dot     = '.';
 	tok_dollar  = '$';
 	tok_lsquare = '[';
 	tok_rsquare = ']';
+	tok_wildcard= '?';
 
 	// Handle com.foo.Bar and Foo$1 -- no identifier_nondigit prefix
 	identifier = /*identifier_nondigit*/ (digit | identifier_nondigit)*;
@@ -64,6 +69,7 @@ Productions
 			{ -> java_parameterized.type } |
 		{primitive} java_primitive
 			{ -> java_primitive.type } ;
+		// {wildcard} java_wildcard { -> java_wildcard.type } ;
 
 	java_class { -> type } =
 		java_class_outer java_class_inner*
@@ -76,16 +82,52 @@ Productions
 			{ -> New type.array(java_type.type) } ;
 
 	java_parameterized { -> type } =
-		java_class tok_lt java_type_list tok_gt
+		java_class java_type_parameters tok_gt
 			{ -> New type.parameterized(
 				java_class.type,
-				[java_type_list.type]) } ;
+				[java_type_parameters.type]) } ;
 
-	java_type_list { -> type* } =
-		{single} java_type
+	java_type_parameters { -> type* } =
+		{concrete} tok_lt java_type
 			{ -> [java_type.type] } |
-		{list} java_type_list tok_comma java_type
-			{ -> [java_type_list.type, java_type.type] } ;
+		{wildcard} tok_lt java_wildcard
+			{ -> [java_wildcard.type] } |
+		{list} java_type_parameters java_type_parameter
+			{ -> [java_type_parameters.type, java_type_parameter.type] } ;
+
+	java_type_parameter { -> type } =
+		{concrete} tok_comma java_type
+			{ -> java_type.type } |
+		{wildcard} tok_comma java_wildcard
+			{ -> java_wildcard.type } ;
+
+	java_wildcard { -> type } =
+		{bare} tok_wildcard
+			{ -> New type.wildcard([], []) } |
+		{upper} tok_wildcard
+				java_bounds_upper
+				java_bounds_lower?
+			{ -> New type.wildcard([java_bounds_upper.type], [java_bounds_lower.type]) } |
+		{lower} tok_wildcard
+				java_bounds_lower
+				java_bounds_upper?
+			{ -> New type.wildcard([java_bounds_upper.type], [java_bounds_lower.type]) } ;
+
+	java_bounds_upper { -> type* } =
+		{single} kw_extends java_type
+			{ -> [java_type.type] } |
+		{list} java_bounds_upper java_bound
+			{ -> [java_bounds_upper.type, java_bound.type] } ;
+
+	java_bounds_lower { -> type* } =
+		{single} kw_super java_type
+			{ -> [java_type.type] } |
+		{list} java_bounds_lower java_bound
+			{ -> [java_bounds_lower.type, java_bound.type] } ;
+
+	java_bound { -> type } =
+		tok_and java_type
+			{ -> java_type.type } ;
 
 	java_primitive { -> type } = 
 		{boolean} kw_boolean
@@ -121,6 +163,7 @@ Abstract Syntax Tree
 		{class} [name]:identifier* [inner_name]:identifier* |
 		{array} [element_type]:type |
 		{parameterized} [raw_type]:type [arguments]:type* |
+		{wildcard} [upper_bounds]:type* [lower_bounds]:type* |
 		{boolean} |
 		{byte} |
 		{char} |

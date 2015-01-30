@@ -1,5 +1,6 @@
 package org.anarres.typeserializer.core.impl;
 
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,8 @@ import javax.annotation.Nonnull;
  * @author shevek
  */
 public class Utils {
+
+    public static final Type[] EMPTY_TYPE_ARRAY = new Type[0];
 
     /**
      * The package separator character: <code>'&#x2e;' == {@value}</code>.

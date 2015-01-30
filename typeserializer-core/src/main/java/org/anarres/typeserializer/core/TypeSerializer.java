@@ -3,8 +3,6 @@ package org.anarres.typeserializer.core;
 import java.io.IOException;
 import java.io.PushbackReader;
 import java.io.StringReader;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import javax.annotation.Nonnull;
 import org.anarres.typeserializer.core.analysis.ReifierVisitor;
@@ -53,37 +51,7 @@ public class TypeSerializer {
 
     private static void serialize(@Nonnull StringBuilder out, @Nonnull Type value) {
         Utils.assertNotNull(value, "Type was null.");
-        if (value instanceof ParameterizedType) {
-            ParameterizedType type = (ParameterizedType) value;
-            serialize(out, type.getRawType());
-            out.append("<");
-            boolean b = false;
-            for (Type ptype : type.getActualTypeArguments()) {
-                if (b)
-                    out.append(",");
-                else
-                    b = true;
-                serialize(out, ptype);
-            }
-            out.append(">");
-        } else if (value instanceof GenericArrayType) {
-            GenericArrayType type = (GenericArrayType) value;
-            serialize(out, type.getGenericComponentType());
-            out.append("[]");
-        } else if (value instanceof Class<?>) {
-            Class<?> type = (Class<?>) value;
-            int array = 0;
-            while (type.isArray()) {
-                type = type.getComponentType();
-                array++;
-            }
-            out.append(type.getName());
-            for (int i = 0; i < array; i++) {
-                out.append("[]");
-            }
-        } else {
-            throw new IllegalArgumentException("Unknown type " + value);
-        }
+        QualifiedGenericNameTypeVisitor.INSTANCE.visit(value, out);
     }
 
     @Nonnull

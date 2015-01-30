@@ -16,7 +16,6 @@ import javax.annotation.Nonnull;
  */
 public class ParameterizedTypeImpl implements ParameterizedType {
 
-    private static final Type[] EMPTY_TYPE_ARRAY = new Type[0];
     @Nonnull
     private final Class<?> rawType;
     @Nonnull
@@ -26,7 +25,7 @@ public class ParameterizedTypeImpl implements ParameterizedType {
             @Nonnull Class<?> rawType,
             @Nonnull Type... typeArguments) {
         this.rawType = rawType;
-        this.typeArguments = (typeArguments == null) ? EMPTY_TYPE_ARRAY : typeArguments;
+        this.typeArguments = (typeArguments == null) ? Utils.EMPTY_TYPE_ARRAY : typeArguments;
     }
 
     @Override

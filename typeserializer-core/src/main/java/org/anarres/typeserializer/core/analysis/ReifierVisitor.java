@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import org.anarres.typeserializer.core.impl.GenericArrayTypeImpl;
 import org.anarres.typeserializer.core.impl.ParameterizedTypeImpl;
 import org.anarres.typeserializer.core.impl.Utils;
+import org.anarres.typeserializer.core.impl.WildcardTypeImpl;
 import org.anarres.typeserializer.core.node.AArrayType;
 import org.anarres.typeserializer.core.node.ABooleanType;
 import org.anarres.typeserializer.core.node.AByteType;
@@ -23,6 +24,7 @@ import org.anarres.typeserializer.core.node.AIntType;
 import org.anarres.typeserializer.core.node.ALongType;
 import org.anarres.typeserializer.core.node.AParameterizedType;
 import org.anarres.typeserializer.core.node.AShortType;
+import org.anarres.typeserializer.core.node.AWildcardType;
 import org.anarres.typeserializer.core.node.PType;
 import org.anarres.typeserializer.core.node.TIdentifier;
 
@@ -42,6 +44,12 @@ public class ReifierVisitor extends DepthFirstAdapter {
     }
 
     public Type getType() {
+        return type;
+    }
+
+    @Nonnull
+    private Type toType(PType in) {
+        in.apply(this);
         return type;
     }
 
@@ -95,15 +103,26 @@ public class ReifierVisitor extends DepthFirstAdapter {
         boolean wg = generic;
         generic = true;
         try {
-            for (PType argument : node.getArguments()) {
-                argument.apply(this);
-                arguments.add(type);
-            }
+            for (PType argument : node.getArguments())
+                arguments.add(toType(argument));
         } finally {
             generic = wg;
         }
 
-        type = new ParameterizedTypeImpl(raw_type, arguments.toArray(new Type[arguments.size()]));
+        type = new ParameterizedTypeImpl(raw_type, arguments.toArray(Utils.EMPTY_TYPE_ARRAY));
+    }
+
+    @Override
+    public void caseAWildcardType(AWildcardType node) {
+        List<Type> upper = new ArrayList<Type>();
+        for (PType bound : node.getUpperBounds())
+            upper.add(toType(bound));
+        List<Type> lower = new ArrayList<Type>();
+        for (PType bound : node.getLowerBounds())
+            lower.add(toType(bound));
+        type = new WildcardTypeImpl(
+                upper.toArray(Utils.EMPTY_TYPE_ARRAY),
+                lower.toArray(Utils.EMPTY_TYPE_ARRAY));
     }
 
     @Override

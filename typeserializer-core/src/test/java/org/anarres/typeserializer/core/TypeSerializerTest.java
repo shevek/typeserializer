@@ -7,6 +7,7 @@ package org.anarres.typeserializer.core;
 import com.google.common.reflect.TypeToken;
 import java.util.Map;
 import java.lang.reflect.Type;
+import java.util.List;
 import javax.annotation.Nonnull;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -29,20 +30,25 @@ public class TypeSerializerTest {
 
     public void testTransform(@Nonnull Type t) {
         LOG.info("Input is " + t + " of type " + t.getClass());
-        String text = TypeSerializer.serialize(t);
-        LOG.info("Text is " + t);
-        Type q = TypeSerializer.deserialize(text);
+        String text0 = TypeSerializer.serialize(t);
+        LOG.info("Text is " + text0);
+        Type q = TypeSerializer.deserialize(text0);
         LOG.info("Output is " + q + " of type " + q.getClass());
 
         // Now escape the Sun type classes before re-testing.
         t = q;
         LOG.info("Input is " + t + " of type " + t.getClass());
-        text = TypeSerializer.serialize(t);
-        LOG.info("Text is " + t);
-        q = TypeSerializer.deserialize(text);
+        String text1 = TypeSerializer.serialize(t);
+        LOG.info("Text is " + text1);
+        q = TypeSerializer.deserialize(text1);
         LOG.info("Output is " + q + " of type " + q.getClass());
 
         assertEquals(t, q);
+        assertEquals(text0, text1);
+
+        StringBuilder out = new StringBuilder();
+        UnqualifiedGenericNameTypeVisitor.INSTANCE.visit(t, out);
+        LOG.info("Unqualified is " + out);
     }
 
     @Test
@@ -56,6 +62,12 @@ public class TypeSerializerTest {
         testTransform((new TypeToken<Map<String, String>>() {
         }).getType());
         testTransform((new TypeToken<Map<String[], String[]>[]>() {
+        }).getType());
+        testTransform((new TypeToken<List<?>>() {
+        }).getType());
+        testTransform((new TypeToken<List<? extends String>>() {
+        }).getType());
+        testTransform((new TypeToken<List<? super String>>() {
         }).getType());
     }
 }
