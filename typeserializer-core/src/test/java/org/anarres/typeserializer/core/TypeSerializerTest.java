@@ -57,7 +57,9 @@ public class TypeSerializerTest {
         testTransform(byte[].class);
         testTransform(Object.class);
         testTransform(InnerStatic.class);
+        testTransform(InnerStatic[].class);
         testTransform(InnerInstance.class);
+        testTransform(InnerInstance[].class);
 
         testTransform((new TypeToken<Map<String, String>>() {
         }).getType());
