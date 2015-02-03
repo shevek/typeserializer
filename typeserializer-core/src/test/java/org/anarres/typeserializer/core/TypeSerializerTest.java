@@ -47,7 +47,7 @@ public class TypeSerializerTest {
         assertEquals(text0, text1);
 
         StringBuilder out = new StringBuilder();
-        UnqualifiedGenericNameTypeVisitor.INSTANCE.visit(t, out);
+        new GenericNameTypeVisitor(GenericNameTypeVisitor.Feature.UnqualifiedImports).visit(t, out);
         LOG.info("Unqualified is " + out);
     }
 

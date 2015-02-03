@@ -25,6 +25,12 @@ public class Utils {
      */
     public static final char INNER_CLASS_SEPARATOR_CHAR = '$';
 
+    public static boolean isNotEmpty(@CheckForNull Object[] a) {
+        if (a == null)
+            return false;
+        return a.length > 0;
+    }
+
     public static boolean equals(@CheckForNull Object a, @CheckForNull Object b) {
         return (a == b) || (a != null && a.equals(b));
     }
@@ -55,6 +61,15 @@ public class Utils {
         abbreviationMap = Collections.unmodifiableMap(m);
     }
 
+    @Nonnull
+    public static String getPackageName(@Nonnull Class<?> c) {
+        String className = c.getName();
+        int i = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);
+        if (i == -1)
+            return "";
+        return className.substring(0, i);
+    }
+
     // ----------------------------------------------------------------------
     /**
      * Converts a class name to a JLS style class name.
@@ -62,6 +77,7 @@ public class Utils {
      * @param className  the class name
      * @return the converted name
      */
+    @Nonnull
     private static String toCanonicalName(@Nonnull String className) {
         if (className.endsWith("[]")) {
             final StringBuilder classNameBuffer = new StringBuilder();

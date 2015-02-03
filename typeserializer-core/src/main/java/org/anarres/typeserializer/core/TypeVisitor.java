@@ -14,20 +14,32 @@ import org.anarres.typeserializer.core.impl.Utils;
  */
 public class TypeVisitor<I, O, X extends Exception> {
 
+    public static final Type[] EMPTY_TYPE_ARRAY = new Type[0];
+    private int depth = 0;
+
+    protected int getDepth() {
+        return depth;
+    }
+
     public O visit(@Nonnull Type value, I input) throws X {
-        Utils.assertNotNull(value, "Type was null.");
-        if (value instanceof ParameterizedType) {
-            return visitParameterizedType((ParameterizedType) value, input);
-        } else if (value instanceof GenericArrayType) {
-            return visitGenericArrayType((GenericArrayType) value, input);
-        } else if (value instanceof Class<?>) {
-            return visitClass((Class<?>) value, input);
-        } else if (value instanceof TypeVariable<?>) {
-            return visitTypeVariable((TypeVariable<?>) value, input);
-        } else if (value instanceof WildcardType) {
-            return visitWildcardType((WildcardType) value, input);
-        } else {
-            throw new IllegalArgumentException("Unknown type " + value);
+        try {
+            depth++;
+            Utils.assertNotNull(value, "Type was null.");
+            if (value instanceof ParameterizedType) {
+                return visitParameterizedType((ParameterizedType) value, input);
+            } else if (value instanceof GenericArrayType) {
+                return visitGenericArrayType((GenericArrayType) value, input);
+            } else if (value instanceof Class<?>) {
+                return visitClass((Class<?>) value, input);
+            } else if (value instanceof TypeVariable<?>) {
+                return visitTypeVariable((TypeVariable<?>) value, input);
+            } else if (value instanceof WildcardType) {
+                return visitWildcardType((WildcardType) value, input);
+            } else {
+                throw new IllegalArgumentException("Unknown type " + value);
+            }
+        } finally {
+            depth--;
         }
     }
 

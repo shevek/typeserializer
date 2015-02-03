@@ -51,7 +51,7 @@ public class TypeSerializer {
 
     private static void serialize(@Nonnull StringBuilder out, @Nonnull Type value) {
         Utils.assertNotNull(value, "Type was null.");
-        QualifiedGenericNameTypeVisitor.INSTANCE.visit(value, out);
+        GenericNameTypeVisitor.INSTANCE.visit(value, out);
     }
 
     @Nonnull
