@@ -20,6 +20,27 @@ subprojects {
 	apply plugin: 'cobertura'
 	cobertura {
 		coverageFormats = [ 'html', 'xml' ]
+
+		// This does not appear to be working. :-(
+		coverageExcludes = [
+			'.*\\.analysis\\.AnalysisAdapter$',
+			'.*\\.analysis\\.DepthFirstAdapter$',
+			'.*\\.analysis\\.ReversedDepthFirstAdapter$',
+			'.*\\.analysis\\.CloneVisitor$',
+			'.*\\.node\\.A.*',
+			'.*\\.node\\.EOF$',
+			'.*\\.node\\.Node$',
+			'.*\\.node\\.P.*',
+			'.*\\.node\\.Start$',
+			'.*\\.node\\.Switch$',
+			'.*\\.node\\.Switchable$',
+			'.*\\.node\\.T.*$',
+			'.*\\.node\\.Token$',
+			'.*\\.node\\.NodeAccessor$',
+			'.*\\.lexer\\.Lexer.*',
+			'.*\\.parser\\..*',
+		]
+
 	}
 	githubPages {
 		pages {
