@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.1794871794871795" branch-rate="0.0" lines-covered="7" lines-valid="39" branches-covered="0" branches-valid="10" complexity="2.111111111111111" version="2.0.3" timestamp="1427502111062">
+<coverage line-rate="0.1794871794871795" branch-rate="0.0" lines-covered="7" lines-valid="39" branches-covered="0" branches-valid="10" complexity="2.111111111111111" version="2.0.3" timestamp="1427697388782">
 	<sources>
 		<source>/home/shevek/java/typeserializer/typeserializer-simplexml/src/main/java</source>
 	</sources>
