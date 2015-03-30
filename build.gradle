@@ -24,10 +24,11 @@ project(':typeserializer-core') {
 	apply plugin: 'sablecc'
 }
 
+// This is a backwards-compatibility module now.
 project(':typeserializer-simplexml') {
 	dependencies {
 		compile project(':typeserializer-core')
-		compile "org.anarres.mirrors.simpleframework:simple-xml:2.7.1-P1"
+		compile "org.anarres.simplexml.serializers:simple-xml-serializers-jdk:1.0.2"
     }
 }
 
