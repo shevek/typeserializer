@@ -30,6 +30,10 @@ project(':typeserializer-simplexml') {
 		compile project(':typeserializer-core')
 		compile "org.anarres.simplexml.serializers:simple-xml-serializers-jdk:1.0.2"
     }
+
+	animalsniffer {
+		skip = true	// icu4j :-(
+	}
 }
 
 project(':typeserializer-kryo') {
