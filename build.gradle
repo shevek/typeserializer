@@ -1,27 +1,37 @@
-// Establish version and status
-ext.githubProjectName = rootProject.name // Change if github project name is not the same as the root project's name
-
 buildscript {
     apply from: file('gradle/buildscript.gradle'), to: buildscript 
 }
 
-apply from: file('gradle/convention.gradle')
-apply from: file('gradle/github.gradle')
-// apply from: file('gradle/maven.gradle')
-apply from: file('gradle/nexus.gradle')
-apply from: file('gradle/check.gradle')
-apply from: file('gradle/license.gradle')
+apply plugin: 'org.anarres.stdproject'
+stdproject {
+}
 
 subprojects {
-    group = "org.anarres.${githubProjectName}"
+    group = "org.anarres.typeserializer"
+
+	apply plugin: 'org.anarres.stdmodule'
+	stdmodule {
+		description "Support for Java generic types in various serialization libraries."
+		author id: 'shevek', name: 'Shevek', email: 'github@anarres.org'
+		license 'Apache-2.0'
+	}
 
     dependencies {
 		testCompile "com.google.guava:guava:18.0"
     }
+
+	sourceCompatibility = 1.6
+	animalsniffer {
+		signature = "org.codehaus.mojo.signature:java16:+@signature"
+	}
 }
 
 project(':typeserializer-core') {
 	apply plugin: 'sablecc'
+
+	dependencies {
+		compile 'com.google.code.findbugs:annotations:2.0.3'
+	}
 }
 
 // This is a backwards-compatibility module now.
