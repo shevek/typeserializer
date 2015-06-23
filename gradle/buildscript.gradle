@@ -7,6 +7,7 @@ repositories {
 }
 
 dependencies {
-	classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.2'
+	classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.4'
 	classpath "org.anarres.gradle:gradle-sablecc-plugin:1.0.4"
+	// classpath 'org.anarres.sablecc:sablecc-gradle:3.7.1-SNAPSHOT'
 }
