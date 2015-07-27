@@ -41,6 +41,17 @@ public class TypeStringifierTest {
     }
 
     @Test
+    public void testUnqualifiedName() {
+        GenericNameTypeVisitor visitor = new GenericNameTypeVisitor(GenericNameTypeVisitor.Feature.UnqualifiedJavaLangImports);
+        testName(visitor, String.class, "String");
+        testName(visitor, String[].class, "String[]");
+        testName(visitor, (new TypeToken<Map<String, Integer>[]>() {
+        }).getType(), "java.util.Map<String, Integer>[]");
+        testName(visitor, (new TypeToken<Map<? extends String, ? super Integer>[]>() {
+        }).getType(), "java.util.Map<? extends String, ? super Integer>[]");
+    }
+
+    @Test
     public void testVarargsName() {
         GenericNameTypeVisitor visitor = new GenericNameTypeVisitor(Feature.UnqualifiedJavaLangImports, Feature.VarargsTopLevel);
         testName(visitor, String[].class, "String...");
