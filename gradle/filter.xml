@@ -1,0 +1,13 @@
+<FindBugsFilter>
+
+	<Match><Package name="org.anarres.typeserializer.core.lexer" /></Match>
+	<Match><Package name="org.anarres.typeserializer.core.parser" /></Match>
+	<Match><Package name="org.anarres.typeserializer.core.node" /></Match>
+
+	<!-- Abstract class empty method. -->
+	<Match><Bug code="ACEM" /></Match>
+
+	<!-- Exception softening. -->
+	<Match><Bug code="EXS" /></Match>
+
+</FindBugsFilter>
