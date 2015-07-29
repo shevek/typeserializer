@@ -4,6 +4,7 @@
  */
 package org.anarres.typeserializer.core.impl;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
@@ -26,11 +27,13 @@ public class WildcardTypeImpl implements WildcardType {
     }
 
     @Override
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public Type[] getUpperBounds() {
         return upperBounds;
     }
 
     @Override
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public Type[] getLowerBounds() {
         return lowerBounds;
     }

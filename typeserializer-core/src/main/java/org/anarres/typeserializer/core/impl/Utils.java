@@ -1,5 +1,6 @@
 package org.anarres.typeserializer.core.impl;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
@@ -139,6 +140,7 @@ public class Utils {
         }
     }
 
+    @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
     public static void assertNotNull(@CheckForNull Object object, @Nonnull String message) {
         if (object == null)
             throw new NullPointerException(message);

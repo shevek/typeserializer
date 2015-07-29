@@ -4,6 +4,7 @@
  */
 package org.anarres.typeserializer.core.impl;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ public class ParameterizedTypeImpl implements ParameterizedType {
     }
 
     @Override
-    @SuppressWarnings("EI_EXPOSE_REP")
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public Type[] getActualTypeArguments() {
         return typeArguments;
     }
