@@ -113,7 +113,7 @@ public class GenericNameTypeVisitor extends TypeVisitor<StringBuilder, Void, Run
             array++;
         }
         visitClassName(type, out);
-        boolean varargs = isVarargs();
+        boolean varargs = array > 0 && isVarargs();
         if (varargs)
             array--;
         for (int i = 0; i < array; i++)
