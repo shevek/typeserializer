@@ -53,6 +53,6 @@ project(':typeserializer-simplexml') {
 project(':typeserializer-kryo') {
 	dependencies {
 		compile project(':typeserializer-core')
-		compile 'com.esotericsoftware:kryo:3.0.1'
+		compile 'com.esotericsoftware:kryo:3.0.3'
 	}
 }

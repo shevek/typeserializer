@@ -23,7 +23,14 @@ public class GenericNameTypeVisitor extends TypeVisitor<StringBuilder, Void, Run
 
     public static enum Feature {
 
-        VarargsTopLevel, UnqualifiedImports, UnqualifiedJavaLangImports;
+        /** Emits the top level as <code>T...</code> instead of <code>T[]</code> if it is an array. */
+        VarargsTopLevel,
+        /** Emits class names as {@link Class#getSimpleName()}. */
+        UnqualifiedImports,
+        /** Emits class names from java.lang.* as {@link Class#getSimpleName()}. */
+        UnqualifiedJavaLangImports,
+        /** Emits class names as {@link Class#getCanonicalName()}. */
+        CanonicalName;
     }
     private final Set<Feature> features;
 
@@ -101,6 +108,8 @@ public class GenericNameTypeVisitor extends TypeVisitor<StringBuilder, Void, Run
             out.append(type.getSimpleName());
         else if (features.contains(Feature.UnqualifiedJavaLangImports) && Utils.equals("java.lang", Utils.getPackageName(type)))
             out.append(type.getSimpleName());
+        else if (features.contains(Feature.CanonicalName))
+            out.append(type.getCanonicalName());
         else
             out.append(type.getName());
     }
