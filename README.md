@@ -53,5 +53,5 @@ This is a standard gradle build: Run
 
     ./gradlew build
 
-For more details, see the [gradle-stdproject-plugin cheatsheet](//github.com/shevek/gradle-stdproject-plugin/CHEATSHEET.md).
+For more details, see the [gradle-stdproject-plugin cheatsheet](//github.com/shevek/gradle-stdproject-plugin/blob/master/CHEATSHEET.md).
 
