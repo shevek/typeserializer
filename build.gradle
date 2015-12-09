@@ -16,9 +16,9 @@ subprojects {
 		license 'Apache-2.0'
 	}
 
-    dependencies {
+	dependencies {
 		testCompile "com.google.guava:guava:18.0"
-    }
+	}
 
 	sourceCompatibility = 1.6
 	animalsniffer {
