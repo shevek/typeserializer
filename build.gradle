@@ -2,12 +2,13 @@ buildscript {
 	repositories {
 		// mavenLocal()
 		mavenCentral()
-		jcenter()
+		// jcenter()
 		// maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+		gradlePluginPortal()
 	}
 
 	dependencies {
-		classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.8'
+		classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.10'
 		classpath "org.anarres.gradle:gradle-sablecc-plugin:1.0.5"
 		// classpath 'org.anarres.sablecc:sablecc-gradle:3.7.1-SNAPSHOT'
 	}
@@ -28,15 +29,15 @@ subprojects {
 	}
 
 	dependencies {
-		testCompile "com.google.guava:guava:18.0"
+		compile "com.google.guava:guava:18.0"
 	}
 
 	sourceCompatibility = 1.6
-	animalsniffer {
-		signature = "org.codehaus.mojo.signature:java16:+@signature"
-	}
+//	animalsniffer {
+//		signature = "org.codehaus.mojo.signature:java16:+@signature"
+//	}
 
-	findbugs {
+	spotbugs {
 		excludeFilter = file("$rootProject.projectDir/gradle/filter.xml")
 	}
 }
@@ -56,14 +57,14 @@ project(':typeserializer-simplexml') {
 		compile "org.anarres.simplexml.serializers:simple-xml-serializers-jdk:1.0.4"
     }
 
-	animalsniffer {
-		skip = true	// icu4j :-(
-	}
+//	animalsniffer {
+//		skip = true	// icu4j :-(
+//	}
 }
 
 project(':typeserializer-kryo') {
 	dependencies {
 		compile project(':typeserializer-core')
-		compile 'com.esotericsoftware:kryo:3.0.3'
+		compile 'com.esotericsoftware:kryo:4.0.1'
 	}
 }
